@@ -29,6 +29,7 @@ func main() {
 	public.POST("/book/food/get", models.GetBook)
 	public.POST("/order", models.PostOrderReq)
 	public.GET("/order/all", models.GetAllOrderReqs)
+	public.GET("/order/:number", models.GetOrderReqsByNumber)
 
 	protected := r.Group("/taxigo/admin")
 	protected.Use(middlewares.JwtAuthMiddleware())

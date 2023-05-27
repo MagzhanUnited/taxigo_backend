@@ -38,7 +38,7 @@ type BookFood struct {
 	Name  string `gorm:"size:255;not null" json:"name"`
 	Price string `gorm:"size:255;not null" json:"price"`
 	Place string `gorm:"size:255;not null" json:"place" binding:"required"`
-	Image string `gorm:"size:255; not null" json:"image"`
+	Image string `gorm:"size:1000; not null" json:"image"`
 }
 
 type inputFood struct {

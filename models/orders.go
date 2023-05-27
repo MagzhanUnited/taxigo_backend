@@ -64,6 +64,54 @@ func (b *OrderList) SaveOrder() (*OrderList, error) {
 	return b, nil
 }
 
+func GetOrderByNumber(number string) ([]OrderList, error) {
+	var orderList []OrderList
+	fmt.Println("number:", number)
+	err := DB.Preload("Orders").Model(&OrderList{}).Where("number = ?", number).Find(&orderList).Error
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(orderList)
+	return orderList, nil
+}
+func GetOrderReqsByNumber(c *gin.Context) {
+	number := c.Param("number")
+	// cleanedNumber := strings.ReplaceAll(number, " ", "")
+	// cleanedNumber = strings.ReplaceAll(cleanedNumber, "(", "")
+	// cleanedNumber = strings.ReplaceAll(cleanedNumber, ")", "")
+	// number = strings.ReplaceAll(cleanedNumber, "-", "")
+	orderReq, err := GetOrderByNumber(number)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, orderReq)
+}
+
+// func GetBookByNumber(number string) ([]BookReq, error) {
+// 	var bookReqs []BookReq
+// 	err := DB.Where("number = ?", number).Find(&bookReqs).Error
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return bookReqs, nil
+// }
+
+// func GetBookReqsByNumber(c *gin.Context) {
+// 	number := c.Param("number")
+// 	cleanedNumber := strings.ReplaceAll(number, " ", "")
+// 	cleanedNumber = strings.ReplaceAll(cleanedNumber, "(", "")
+// 	cleanedNumber = strings.ReplaceAll(cleanedNumber, ")", "")
+// 	number = strings.ReplaceAll(cleanedNumber, "-", "")
+
+// 	bookReqs, err := GetBookByNumber(number)
+// 	if err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, bookReqs)
+// }
+
 // func PostBook(c *gin.Context) {
 // 	var bookFood BookFood
 
